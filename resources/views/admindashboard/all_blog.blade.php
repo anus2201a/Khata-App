@@ -60,7 +60,7 @@
                                                         @foreach ($data as $blog)
                                                             <tr>
                                                                 <td>{{ $blog->tittle }}</td>
-                                                                <td>{{ $blog->description }}</td>
+                                                                <td>{{$blog->description}} </td>
                                                                 <td><img src="{{ asset($blog->image) }}" width="200" height='auto' alt="Image">
                                                                 </td>
                                                                 <td class="col-lg-2">

@@ -19,6 +19,7 @@ use App\Models\Our_Service;
 use App\Models\services_faq;
 use Illuminate\Http\Request;
 use App\Models\cms_contacts;
+use App\Models\khata;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -531,16 +532,16 @@ class AdminController extends Controller
         return view('admindashboard.manage_khata', compact('manage_table'));
     }
 
-    public function user_khata($slug = '' , $id = null)
+    public function user_khata($slug = '', $id = null)
     {
         $model = null;
         if ($id) {
             // dd($id);
             $data = 'App\Models\khata';
-            $model = $data::where('user_id',$id)->distinct()->get();
+            $model = $data::where('user_id', $id)->distinct()->get();
         }
         // $data = $this->manage_table($slug, $id, $model);
-        return view('admindashboard.user_khata', compact('id' ,'model'));
+        return view('admindashboard.user_khata', compact('id', 'model'));
     }
 
     public function generate_form($slug = '', $id = null)
@@ -770,7 +771,9 @@ class AdminController extends Controller
             return $resp;
         } elseif ($slug == 'khata') {
             $data = 'App\Models\\' . $slug;
+            // $loop = $data::where('is_active', 1)->where('is_deleted', 0)->get();
             $loop = $data::where('is_active', 1)->where('is_deleted', 0)->get();
+            // dd(unserialize($loop->name));
             // dd($loop);
             if ($loop) {
                 $body .= '<thead>
@@ -784,19 +787,19 @@ class AdminController extends Controller
                         </thead>
                         <tbody>';
                 if ($loop) {
+                    // dd(unserialize($loop->name));
 
                     foreach ($loop as $key => $value) {
-
                         $body .= ' <tr>
                         <td>' . ++$key . '</td>
 
-                                <td>' . $value->name . '</td>
+                                <td>' . $value->name['name'] . '</td>
                                 <td>' . $value->amount . '</td>
                                 <td>' . ($value->get_user->name ??  '') . '</td>
                                 <td class="col-lg-2">
                                     <div class="col-lg-12">
                                     <a href="' . route('generate', ['slug' => $slug, 'id' => $value->id]) . '" class="btn-one success text-white pt-3">Update</a><br>' .
-                                    '<a href="' . route('generate', ['slug' => $slug, 'id' => $value->id]) . '" class="btn btn-primary text-center text-white pt-3">Manage</a><br>' .
+                            '<a href="' . route('generate', ['slug' => $slug, 'id' => $value->id]) . '" class="btn btn-primary text-center text-white pt-3">Manage</a><br>' .
                             '</div></td>
                             </tr>';
                     }
@@ -806,7 +809,7 @@ class AdminController extends Controller
             // dd($body);
             $resp['body'] = $body;
             return $resp;
-        }   elseif ($slug == 'Category') {
+        } elseif ($slug == 'Category') {
             $data = 'App\Models\\' . $slug;
             $loop = $data::all();
             if ($loop) {
@@ -876,7 +879,7 @@ class AdminController extends Controller
             // dd($body);
             $resp['body'] = $body;
             return $resp;
-        }  else {
+        } else {
             return $body;
         }
     }
@@ -886,6 +889,11 @@ class AdminController extends Controller
 
     public function crud_generate($slug = '', Request $request)
     {
+
+        // $name = serialize(json_encode(array_values($request->all())));
+        // $name = unserialize($name);
+        // // $name = serialize(array($request->all()));
+        // dd($name);
 
         $data = 'App\Models\\' . $slug;
         $req = $request->except('_token', 'image');
@@ -902,12 +910,55 @@ class AdminController extends Controller
             if ($slug == "User") {
                 $req['password'] = Hash::make($request->password);
             }
-            $create = $data::create($req);
+
+            $create = $data::create([
+                // 'name' => serialize($req),
+                'name' => $req,
+                'user_id' => $request->user_id,
+                'amount' => $request->amount,
+                'description' => $request->description,
+            ]);
+
+            $array = $create->name['name'];
+            $array = explode(',' ,$array);
+            // dd($explode);
+            $name = [];
+            $amount = [];
+            foreach ($array as $key => $value) {
+                // dd($value);
+                if ($key % 2 != 0) {
+                    $name[] = $value;
+                    // dd('yes');
+                }else{
+                    $amount[] = $value;
+                    // dd('no');
+                }
+            }
+            dd($array ,$name , $amount);
+
+
             $message = "Record Created";
         }
 
+        // $seralize = serialize($req);
+
+        // $unSeralize = unserialize($seralize);
+
+        // dd($seralize, $unSeralize );
 
         //  dd($create);
         return redirect()->route('listing', $slug)->with('success', $message);
+    }
+
+
+    public function testing()
+    {
+
+        $array = 'anus, 50, demo, 50';
+        $name = [];
+        $age = [];
+
+        if ($array) {
+        }
     }
 }

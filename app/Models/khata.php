@@ -15,6 +15,10 @@ class khata extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'name' => 'array',
+    ];
+
 
     public function get_user()
     {

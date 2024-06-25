@@ -36,6 +36,9 @@
 
                                             </div>
                                         </div><br>
+
+                                    
+
                                         <form action="{{ route('blog.update-store' , $data->id ?? '') }}" enctype="multipart/form-data" method="POST">
                                             @csrf
                                             {{-- <div class="personal-informations-head">
