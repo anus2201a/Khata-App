@@ -33,7 +33,11 @@ class AuthController extends Controller
         } else {
             return redirect()->route('login.form')->with('error_msg', 'Registration Failed');
         }
+    
+
     }
+
+
 
 
     public function login_form()

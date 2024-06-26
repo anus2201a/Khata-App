@@ -1572,6 +1572,7 @@ datatables.net/v/dt/jq-3.7.0/jszip-3.10.1/dt-2.0.1/af-2.7.0/b-3.0.0/b-colvis-3.0
 
             });
         </script>
+        @yield('script')
 
 
 
@@ -2177,9 +2178,6 @@ datatables.net/v/dt/jq-3.7.0/jszip-3.10.1/dt-2.0.1/af-2.7.0/b-3.0.0/b-colvis-3.0
 
     </script>
  --}}
-
-
-
 
 
 

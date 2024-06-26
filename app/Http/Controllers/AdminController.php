@@ -625,6 +625,7 @@ class AdminController extends Controller
             $body .= '   <form action="' . route('crud_generate', $slug) . '" enctype="multipart/form-data" method="POST">
                                                  <input type="hidden" name="_token" value="' . csrf_token() . '">
                                                   <input type="hidden" name="id" value="' . ($model ? $model->id : '') . '">
+                                                  <input type="hidden" name="hold_value" id="hold_value" value="">
                                              <div class="personal-informations-from">
                                                 <div class="personal-informations-from-item">
 
@@ -633,19 +634,19 @@ class AdminController extends Controller
                                                             <div class="col-12 col-md-12 col-lg-6">
                                                                 <label for="exampleFormControlInput1"
                                                                     class="form-label last-name ">Name</label>
-                                                                <input type="text" name="name" class="form-control"
+                                                                <input type="text" name="name" id="name" class="form-control"
                                                                     aria-label="Last name" value="' . ($model ? $model->name : '') . '">
                                                             </div>
                                                             <div class="col-12 col-md-12 col-lg-6">
                                                                 <label for="exampleFormControlInput1"
                                                                     class="form-label last-name ">Amount</label>
-                                                                <input type="number" name="amount" class="form-control"
+                                                                <input type="number" name="amount" id="amount" class="form-control"
                                                                     aria-label="Last name" value="' . ($model ? $model->amount : '') . '">
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="personal-informations-from-item-inner">
-                                                        <div class="row ">
+                                                        <div class="row">
 
                                                         </div>
                                                     </div>
@@ -663,7 +664,7 @@ class AdminController extends Controller
                                                                                                                                                                                             <option value="" selected disabled>Please choose an option</option>';
             if ($loop) {
                 foreach ($loop as $key => $value) {
-                    $body .= '<option value="' . $value->id . '">' . $value->name . '</option>';
+                    $body .= '<option value="' . $value->id . '"' . ($value->id === ($model ? $model->user_id : '') ? 'selected' : '') . '>' . $value->name . '</option>';
                 }
             }
             $body .= '<option value="2">Customer</option>
@@ -685,7 +686,18 @@ class AdminController extends Controller
                                             </div>
                                         </form>';
 
+            $script = 'var inputs = $("input, select, textarea").keypress(function (e) {;
+                                if (e.which == 13) {
+                                        e.preventDefault();
+                                    var nextInput = inputs.get(inputs.index(this) + 1);
+                                    if (nextInput) {
+                                    nextInput.focus();
+                                    }
+                                }
+                            });';
+
             $resp['body'] = $body;
+            $resp['script'] = $script;
             return $resp;
         } elseif ($slug == 'Category') {
             $data = 'App\Models\\' . $slug;
@@ -793,7 +805,7 @@ class AdminController extends Controller
                         $body .= ' <tr>
                         <td>' . ++$key . '</td>
 
-                                <td>' . $value->name['name'] . '</td>
+                                <td>' . $value->name . '</td>
                                 <td>' . $value->amount . '</td>
                                 <td>' . ($value->get_user->name ??  '') . '</td>
                                 <td class="col-lg-2">
@@ -911,30 +923,35 @@ class AdminController extends Controller
                 $req['password'] = Hash::make($request->password);
             }
 
-            $create = $data::create([
-                // 'name' => serialize($req),
-                'name' => $req,
-                'user_id' => $request->user_id,
-                'amount' => $request->amount,
-                'description' => $request->description,
-            ]);
-
-            $array = $create->name['name'];
-            $array = explode(',' ,$array);
-            // dd($explode);
+            $array = $request->name;
+            $array = explode(',', $array);
+            // dd($array);
             $name = [];
             $amount = [];
             foreach ($array as $key => $value) {
                 // dd($value);
-                if ($key % 2 != 0) {
+                if ($key % 2 == 0) {
                     $name[] = $value;
                     // dd('yes');
-                }else{
+                } else {
                     $amount[] = $value;
                     // dd('no');
                 }
+
+                // dd($array, $name, $amount);
             }
-            dd($array ,$name , $amount);
+            foreach ($name as $key => $value) {
+                $create = $data::create([
+                    // 'name' => serialize($req),
+                    'name' => $value,
+                    'user_id' => $request->user_id,
+                    'amount' => $amount[$key],
+                    'description' => $request->description,
+                ]);
+            }
+
+
+            // dd($create);
 
 
             $message = "Record Created";
@@ -948,17 +965,5 @@ class AdminController extends Controller
 
         //  dd($create);
         return redirect()->route('listing', $slug)->with('success', $message);
-    }
-
-
-    public function testing()
-    {
-
-        $array = 'anus, 50, demo, 50';
-        $name = [];
-        $age = [];
-
-        if ($array) {
-        }
     }
 }

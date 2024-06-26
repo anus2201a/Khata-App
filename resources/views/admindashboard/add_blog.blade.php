@@ -51,6 +51,7 @@
                                                                     class="form-label last-name ">Tittle</label>
                                                                 <input type="text" value="" name="tittle"
                                                                     class="form-control" aria-label="Last name">
+                                                                    <option value="$value->id" ($value->id === $model->user_id ? 'selected' : '') . '>' . $value->id . '</option>
                                                             </div>
 
                                                             <div class="col-12 col-md-12 col-lg-6">

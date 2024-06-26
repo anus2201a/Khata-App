@@ -134,3 +134,10 @@
     </div>
 @endsection
 
+@section('script')
+
+<script>
+    {!! $form['script'] !!}
+</script>
+
+@endsection
