@@ -625,7 +625,7 @@ class AdminController extends Controller
             $body .= '   <form action="' . route('crud_generate', $slug) . '" enctype="multipart/form-data" method="POST">
                                                  <input type="hidden" name="_token" value="' . csrf_token() . '">
                                                   <input type="hidden" name="id" value="' . ($model ? $model->id : '') . '">
-                                                  <input type="hidden" name="hold_value" id="hold_value" value="">
+                                                  <input type="hidden" name="hold_value" class="hold_value" id="hold_value">
                                              <div class="personal-informations-from">
                                                 <div class="personal-informations-from-item">
 
@@ -634,7 +634,7 @@ class AdminController extends Controller
                                                             <div class="col-12 col-md-12 col-lg-6">
                                                                 <label for="exampleFormControlInput1"
                                                                     class="form-label last-name ">Name</label>
-                                                                <input type="text" name="name" id="name" class="form-control"
+                                                                <input type="text" name="name" id="myname" class="form-control myname"
                                                                     aria-label="Last name" value="' . ($model ? $model->name : '') . '">
                                                             </div>
                                                             <div class="col-12 col-md-12 col-lg-6">
@@ -667,9 +667,7 @@ class AdminController extends Controller
                     $body .= '<option value="' . $value->id . '"' . ($value->id === ($model ? $model->user_id : '') ? 'selected' : '') . '>' . $value->name . '</option>';
                 }
             }
-            $body .= '<option value="2">Customer</option>
-                                                                     <option value="3">Suplier</option>
-                                                                </select>
+            $body .= '</select>
                                                             </div>
                                                             <div class="col-12 col-md-12 col-lg-6">
                                                                 <label for="exampleFormControlInput1"
@@ -686,15 +684,48 @@ class AdminController extends Controller
                                             </div>
                                         </form>';
 
-            $script = 'var inputs = $("input, select, textarea").keypress(function (e) {;
-                                if (e.which == 13) {
-                                        e.preventDefault();
+            $script = 'var inputs = $("input").keyup(function (e) {
+                                if (e.key == ",") {
+                                    // console.log("demo");
+                                    e.preventDefault();
                                     var nextInput = inputs.get(inputs.index(this) + 1);
                                     if (nextInput) {
                                     nextInput.focus();
                                     }
                                 }
-                            });';
+                            });
+
+                            var inputs = $("input").keypress(function (e) {
+                                 if (e.key == "Enter") {
+                                    // console.log("hello");
+                                     e.preventDefault();
+                                      var name = document.getElementById("myname").value;
+                                      var amount = document.getElementById("amount").value;
+                                    var hidden_value = name.innerHTML = name.replace(/,/g, ","+amount+",");
+                                      var name = document.getElementById("myname").value;
+                                    console.log(hidden_value);
+
+                                    //  var amount = document.getElementById("amount").value;
+                                    //  var name = document.getElementById("myname").setAttribute("value",amount);
+                                    var nextInput = inputs.get(inputs.index(this) - 1);
+                                    if (nextInput) {
+                                    nextInput.focus();
+                                    }
+                                }
+                            });
+
+                            // var amounts = [];
+                            // $("#amount").keypress(function (e) {
+                            //     if (e.key == "Enter") {
+                            //         e.preventDefault();
+                            //         var name = document.getElementById("myname").value;
+                            //         var new_name = name.lastIndexOf(",")
+                            //         amounts.push(name.substring(new_name + 1));
+                            //         amounts.push($(this).val());
+                            //         console.log(amounts)
+                            //     }
+                            // });
+                            ';
 
             $resp['body'] = $body;
             $resp['script'] = $script;
