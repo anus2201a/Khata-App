@@ -703,8 +703,8 @@ class AdminController extends Controller
                             var inputs = $("input").keypress(function (e) {
                                  if (e.key == "Enter") {
                                      e.preventDefault();
-                                    var name = document.getElementById("myname").value;
-                                    var amount = document.getElementById("amount").value.trim();;
+                                    var name = document.getElementById("myname").value.trim();;
+                                    var amount = document.getElementById("amount").value.trim();
                                     //   var merge = [name + amount + ","];
                                       var name = document.getElementById("myname").value = "";
                                       var amount = document.getElementById("amount").value = "";
