@@ -706,8 +706,8 @@ class AdminController extends Controller
                                     var name = document.getElementById("myname").value;
                                     var amount = document.getElementById("amount").value.trim();;
                                     //   var merge = [name + amount + ","];
-                                    //   var name = document.getElementById("myname").value = "";
-                                    //   var amount = document.getElementById("amount").value = "";
+                                      var name = document.getElementById("myname").value = "";
+                                      var amount = document.getElementById("amount").value = "";
                                       merge.push(merge);
                                     //   var hidden_input = hold_value.value = ;
                                       console.log(merge);
