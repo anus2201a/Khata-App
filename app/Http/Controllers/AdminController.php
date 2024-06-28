@@ -679,7 +679,7 @@ class AdminController extends Controller
                                                     </div>
                                                 </div>
                                                 <div class="personal-informations-from-btn">
-                                                <button type="submit" class="btn-one">Save Profile</button>
+                                                <button type="text" class="btn-one">Save Profile</button>
                                                 </div>
                                             </div>
                                         </form>';
@@ -695,15 +695,28 @@ class AdminController extends Controller
                                 }
                             });
 
+                                var getname = document.getElementById("myname").value;
+                                var getamount = document.getElementById("amount").value;
+                                var hold_value = document.getElementById("hold_value").value;
+                                var merge = [];
+
                             var inputs = $("input").keypress(function (e) {
                                  if (e.key == "Enter") {
-                                    // console.log("hello");
                                      e.preventDefault();
-                                      var name = document.getElementById("myname").value;
-                                      var amount = document.getElementById("amount").value;
-                                    var hidden_value = name.innerHTML = name.replace(/,/g, ","+amount+",");
-                                      var name = document.getElementById("myname").value;
-                                    console.log(hidden_value);
+                                    var name = document.getElementById("myname").value;
+                                    var amount = document.getElementById("amount").value.trim();;
+                                    //   var merge = [name + amount + ","];
+                                    //   var name = document.getElementById("myname").value = "";
+                                    //   var amount = document.getElementById("amount").value = "";
+                                      merge.push(merge);
+                                    //   var hidden_input = hold_value.value = ;
+                                      console.log(merge);
+
+                                    //   var hidden_value = hold_value.value = name.replace(/,/g, ","+amount+",");
+
+
+                                    //   var merge2 = merge + name + amount;
+                                        // console.log(hidden_input);
 
                                     //  var amount = document.getElementById("amount").value;
                                     //  var name = document.getElementById("myname").setAttribute("value",amount);
@@ -714,12 +727,13 @@ class AdminController extends Controller
                                 }
                             });
 
+
                             // var amounts = [];
                             // $("#amount").keypress(function (e) {
                             //     if (e.key == "Enter") {
                             //         e.preventDefault();
                             //         var name = document.getElementById("myname").value;
-                            //         var new_name = name.lastIndexOf(",")
+                            //         var new_name = name.lastIndexOf(",");
                             //         amounts.push(name.substring(new_name + 1));
                             //         amounts.push($(this).val());
                             //         console.log(amounts)
