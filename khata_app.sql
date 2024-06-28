@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 20, 2024 at 04:14 PM
+-- Generation Time: Jun 28, 2024 at 09:46 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `web_cms_key_value`
+-- Database: `khata_app`
 --
 
 -- --------------------------------------------------------
@@ -283,6 +283,46 @@ INSERT INTO `homes` (`id`, `name`, `slug`, `value`, `created_at`, `updated_at`) 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `khata`
+--
+
+CREATE TABLE `khata` (
+  `id` int(11) NOT NULL,
+  `name` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`name`)),
+  `user_id` int(11) NOT NULL,
+  `amount` decimal(10,0) NOT NULL,
+  `description` mediumtext NOT NULL,
+  `is_active` tinyint(4) NOT NULL DEFAULT 1,
+  `is_deleted` tinyint(4) NOT NULL DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `khata`
+--
+
+INSERT INTO `khata` (`id`, `name`, `user_id`, `amount`, `description`, `is_active`, `is_deleted`, `created_at`, `updated_at`) VALUES
+(137, '\"hello\"', 35, '451', 'demo', 1, 0, '2024-06-26 04:40:38', '2024-06-26 04:40:38'),
+(138, '\"demo\"', 35, '540', 'demo', 1, 0, '2024-06-26 04:40:38', '2024-06-26 04:40:38'),
+(139, '\"tech\"', 35, '200', 'demo', 1, 0, '2024-06-26 04:40:38', '2024-06-26 04:40:38'),
+(140, '\"cloths\"', 35, '451', 'demo', 1, 0, '2024-06-26 04:42:59', '2024-06-26 04:42:59'),
+(141, '\"demo\"', 35, '540', 'demo', 1, 0, '2024-06-26 04:42:59', '2024-06-26 04:42:59'),
+(142, '\"tech\"', 35, '200', 'demo', 1, 0, '2024-06-26 04:42:59', '2024-06-26 04:42:59'),
+(143, '\"cloths\"', 34, '909', 'hello', 1, 0, '2024-06-26 04:45:41', '2024-06-26 04:45:41'),
+(144, '\"cloths\"', 34, '909', 'hello', 1, 0, '2024-06-26 04:45:52', '2024-06-26 04:45:52'),
+(145, '\"jlkjl\"', 34, '450', 'hello', 1, 0, '2024-06-26 04:45:52', '2024-06-26 04:45:52'),
+(146, '\"anus\"', 34, '120', 'demo', 1, 0, '2024-06-26 06:14:16', '2024-06-26 06:14:16'),
+(147, '\"cloths\"', 34, '451', 'demo', 1, 0, '2024-06-26 06:53:10', '2024-06-26 06:53:10'),
+(148, '\"demo\"', 34, '540', 'demo', 1, 0, '2024-06-26 06:53:10', '2024-06-26 06:53:10'),
+(149, '\"tech\"', 34, '200', 'demo', 1, 0, '2024-06-26 06:53:10', '2024-06-26 06:53:10'),
+(150, '\"cloths\"', 34, '451', 'hello', 1, 0, '2024-06-26 07:06:34', '2024-06-26 07:06:34'),
+(151, '\"demo\"', 34, '540', 'hello', 1, 0, '2024-06-26 07:06:34', '2024-06-26 07:06:34'),
+(152, '\"tech\"', 34, '200', 'hello', 1, 0, '2024-06-26 07:06:34', '2024-06-26 07:06:34');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `logos`
 --
 
@@ -478,12 +518,14 @@ INSERT INTO `teams` (`id`, `name`, `image`, `profession`, `created_at`, `updated
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `userType` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role_id` int(50) DEFAULT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `phone_no` bigint(20) NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_active` tinyint(4) NOT NULL DEFAULT 1,
+  `is_deleted` tinyint(4) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -492,14 +534,16 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `userType`, `email`, `phone_no`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(33, 'anus', 'admin', 'admin@project.com', 3222554514, NULL, '$2y$10$TzRGw2d6nDs7HtjDPY.6H.wxYkwVKlqTannaO0TFFh0XzgEtcPMzS', NULL, '2024-02-19 19:59:00', '2024-02-20 12:09:06'),
-(34, 'Aqib Arain', 'user', 'ali@gmail.com', 321253562, NULL, '$2y$10$lQfjojbiPR2KD5TeC4UdwuwC12OD5GrnGKX2S1Myn.EzdvgW7J1nO', NULL, '2024-02-20 12:45:33', '2024-02-20 12:45:33'),
-(35, 'Dr.ali', 'doctor', 'ali4@gmail.com', 321524867, NULL, '$2y$10$U6LLhKfunXc.WAONfV0IZOpU1yahF8RqxAggQehaAjvP/RFm3UVFG', NULL, '2024-02-20 13:00:07', '2024-02-20 13:00:07'),
-(37, 'ali', 'doctor', 'ali1@gmail.com', 3212569464, NULL, '$2y$10$VjXX0Jep8ry5g29Uk5ibEOMFvXLsN4TzKnhgrg2J1lVUAUjdSoWA.', NULL, '2024-02-20 13:00:56', '2024-02-20 13:00:56'),
-(38, 'Aqib Arain', 'doctor', 'anus2@gmail.com', 321524867, NULL, '$2y$10$ASR0gFCGwb0SaPeGJ4.HmuZ5ArlFPJpdmsho2kHaYRNm6Eqb/O1pq', NULL, '2024-02-20 13:03:26', '2024-02-20 13:03:26'),
-(39, 'anus', 'user', 'anusanus@gmail.com', 32125213421, NULL, '$2y$10$9V1Ym8ob0YGCMv0EAJ6KBO2BXoMysF5nFkZWM.NQrkjbhVhnkj/B.', NULL, '2024-02-21 12:59:24', '2024-02-21 12:59:24'),
-(40, 'ali', 'user', 'ali4a@gmail.com', 321524867, NULL, '$2y$10$i6nkE5/GT2Q83D7HumadRePzmAbDp8E.5LqzqiVKUdXVEbxES12lW', NULL, '2024-02-21 13:01:00', '2024-02-21 13:01:00');
+INSERT INTO `users` (`id`, `name`, `role_id`, `email`, `phone_no`, `email_verified_at`, `password`, `remember_token`, `is_active`, `is_deleted`, `created_at`, `updated_at`) VALUES
+(33, 'anus', 1, 'admin@project.com', 3222554514, NULL, '$2y$10$TzRGw2d6nDs7HtjDPY.6H.wxYkwVKlqTannaO0TFFh0XzgEtcPMzS', NULL, 1, 0, '2024-02-19 19:59:00', '2024-02-20 12:09:06'),
+(34, 'Aqib Arain', 0, 'ali@gmail.com', 321253562, NULL, '$2y$10$lQfjojbiPR2KD5TeC4UdwuwC12OD5GrnGKX2S1Myn.EzdvgW7J1nO', NULL, 1, 0, '2024-02-20 12:45:33', '2024-02-20 12:45:33'),
+(35, 'Dr.ali', 0, 'ali4@gmail.com', 321524867, NULL, '$2y$10$U6LLhKfunXc.WAONfV0IZOpU1yahF8RqxAggQehaAjvP/RFm3UVFG', NULL, 1, 0, '2024-02-20 13:00:07', '2024-02-20 13:00:07'),
+(37, 'ali', 0, 'ali1@gmail.com', 3212569464, NULL, '$2y$10$VjXX0Jep8ry5g29Uk5ibEOMFvXLsN4TzKnhgrg2J1lVUAUjdSoWA.', NULL, 1, 0, '2024-02-20 13:00:56', '2024-02-20 13:00:56'),
+(38, 'Aqib Arain', 0, 'anus2@gmail.com', 321524867, NULL, '$2y$10$ASR0gFCGwb0SaPeGJ4.HmuZ5ArlFPJpdmsho2kHaYRNm6Eqb/O1pq', NULL, 1, 0, '2024-02-20 13:03:26', '2024-02-20 13:03:26'),
+(39, 'anus', 0, 'anusanus@gmail.com', 32125213421, NULL, '$2y$10$9V1Ym8ob0YGCMv0EAJ6KBO2BXoMysF5nFkZWM.NQrkjbhVhnkj/B.', NULL, 1, 0, '2024-02-21 12:59:24', '2024-02-21 12:59:24'),
+(40, 'ali', 0, 'ali4a@gmail.com', 321524867, NULL, '$2y$10$i6nkE5/GT2Q83D7HumadRePzmAbDp8E.5LqzqiVKUdXVEbxES12lW', NULL, 1, 0, '2024-02-21 13:01:00', '2024-02-21 13:01:00'),
+(42, 'socket', 2, 'customer@project.com', 3212569464, NULL, '$2y$10$zCs9Q86MKSnwuuDK.g/Xt.WhG4yHXxJsV4U6Vj5rhcGuz.pYMUWfG', NULL, 1, 0, '2024-06-21 05:45:22', '2024-06-21 05:45:22'),
+(45, 'customer', 2, 'aaanus@gmail.com', 3212121, NULL, '$2y$10$UcmT3Hr3G9BjhJxCMybw0uAtZrDy7.MkAapMeSudGN0iyM4gBNUhK', NULL, 1, 0, '2024-06-21 06:18:17', '2024-06-21 06:27:03');
 
 -- --------------------------------------------------------
 
@@ -691,6 +735,12 @@ ALTER TABLE `homes`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `khata`
+--
+ALTER TABLE `khata`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `logos`
 --
 ALTER TABLE `logos`
@@ -792,6 +842,12 @@ ALTER TABLE `homes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
+-- AUTO_INCREMENT for table `khata`
+--
+ALTER TABLE `khata`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=153;
+
+--
 -- AUTO_INCREMENT for table `logos`
 --
 ALTER TABLE `logos`
@@ -837,7 +893,7 @@ ALTER TABLE `teams`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `web_cms`
