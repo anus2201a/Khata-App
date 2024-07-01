@@ -615,8 +615,10 @@ class AdminController extends Controller
                                                 </div>
                                             </div>
                                         </form>';
-
+            $script = '';
             $resp['body'] = $body;
+            $resp['script'] = $script;
+
             return $resp;
         } elseif ($slug == 'khata') {
             $data = 'App\Models\\' . $slug;
@@ -645,9 +647,15 @@ class AdminController extends Controller
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="personal-informations-from-item-inner">
-                                                        <div class="row">
 
+                                                      <div class="personal-informations-from-item-inner">
+                                                        <div class="row">
+                                                            <div class="col-12 col-md-12 col-lg-12">
+                                                                <label for="exampleFormControlInput1"
+                                                                    class="form-label last-name ">Merge Name</label>
+                                                                <input type="text" name="name" id="merger_name" class="form-control myname"
+                                                                    aria-label="Last name" value="">
+                                                            </div>
                                                         </div>
                                                     </div>
 
@@ -684,61 +692,39 @@ class AdminController extends Controller
                                             </div>
                                         </form>';
 
-            $script = 'var inputs = $("input").keyup(function (e) {
-                                if (e.key == ",") {
-                                    // console.log("demo");
-                                    e.preventDefault();
-                                    var nextInput = inputs.get(inputs.index(this) + 1);
-                                    if (nextInput) {
-                                    nextInput.focus();
-                                    }
+            $script =  'var getname = document.getElementById("myname");
+                        var getamount = document.getElementById("amount");
+                        var hold_value = document.getElementById("hold_value");
+                        var merge = [];
+
+                        getname.addEventListener("keyup", (e) => {
+                            if (e.key == ",") {
+                                // console.log("demo");
+                                e.preventDefault();
+                                getamount.focus();
+                            }
+                        });
+
+
+                        getamount.addEventListener("keypress", (e) => {
+                            if (e.key == "Enter") {
+                                e.preventDefault();
+                                var name = document.getElementById("myname").value.trim();
+                                var amount = document.getElementById("amount").value.trim();
+                                if(name && amount){
+                                
+                                    merge.push(name + amount);
+                                    console.log(merge);
+                                    getname.value = "";
+                                    getamount.value = "";
+                                    hold_value.value = merge.join(",");
+                                    console.log(hold_value.value);
                                 }
+
+                                getname.focus();
+
+                            }
                             });
-
-                                var getname = document.getElementById("myname").value;
-                                var getamount = document.getElementById("amount").value;
-                                var hold_value = document.getElementById("hold_value").value;
-                                var merge = [];
-
-                            var inputs = $("input").keypress(function (e) {
-                                 if (e.key == "Enter") {
-                                     e.preventDefault();
-                                    var name = document.getElementById("myname").value.trim();;
-                                    var amount = document.getElementById("amount").value.trim();
-                                    //   var merge = [name + amount + ","];
-                                      var name = document.getElementById("myname").value = "";
-                                      var amount = document.getElementById("amount").value = "";
-                                      merge.push(merge);
-                                    //   var hidden_input = hold_value.value = ;
-                                      console.log(merge);
-
-                                    //   var hidden_value = hold_value.value = name.replace(/,/g, ","+amount+",");
-
-
-                                    //   var merge2 = merge + name + amount;
-                                        // console.log(hidden_input);
-
-                                    //  var amount = document.getElementById("amount").value;
-                                    //  var name = document.getElementById("myname").setAttribute("value",amount);
-                                    var nextInput = inputs.get(inputs.index(this) - 1);
-                                    if (nextInput) {
-                                    nextInput.focus();
-                                    }
-                                }
-                            });
-
-
-                            // var amounts = [];
-                            // $("#amount").keypress(function (e) {
-                            //     if (e.key == "Enter") {
-                            //         e.preventDefault();
-                            //         var name = document.getElementById("myname").value;
-                            //         var new_name = name.lastIndexOf(",");
-                            //         amounts.push(name.substring(new_name + 1));
-                            //         amounts.push($(this).val());
-                            //         console.log(amounts)
-                            //     }
-                            // });
                             ';
 
             $resp['body'] = $body;
@@ -968,7 +954,9 @@ class AdminController extends Controller
                 $req['password'] = Hash::make($request->password);
             }
 
-            $array = $request->name;
+            $array = $request->hold_value;
+            // dd($request->hold_value);
+            // $array = $request->name;
             $array = explode(',', $array);
             // dd($array);
             $name = [];
