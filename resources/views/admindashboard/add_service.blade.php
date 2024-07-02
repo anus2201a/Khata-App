@@ -58,7 +58,7 @@
                                                                     <select class="form-control" name="category" aria-label="Last name">
                                                                         <option selected>Please Select </option>
                                                                         @foreach($data as $category)
-                                                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                                                        <option value="{{$category->id}}" >{{$category->name}}</option>
                                                                         @endforeach
 
                                                                       </select>

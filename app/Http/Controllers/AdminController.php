@@ -538,7 +538,7 @@ class AdminController extends Controller
         if ($id) {
             // dd($id);
             $data = 'App\Models\khata';
-            $model = $data::where('user_id', $id)->distinct()->get();
+            $model = $data::where('user_id', $id)->distinct('amount')->get();
         }
         // $data = $this->manage_table($slug, $id, $model);
         return view('admindashboard.user_khata', compact('id', 'model'));
@@ -699,12 +699,26 @@ class AdminController extends Controller
 
                         getname.addEventListener("keyup", (e) => {
                             if (e.key == ",") {
-                                // console.log("demo");
+                                var name = document.getElementById("myname").value.trim();
+                                // console.log(name);
                                 e.preventDefault();
                                 getamount.focus();
                             }
                         });
+                         getamount.addEventListener("keydown", (e) => {
+                            if (e.key == "Tab") {
 
+                                var name = document.getElementById("myname").value.trim();
+                                var getamount = document.getElementById("amount").value.trim();
+        //                        if(name){
+        //                             let parts = name.split(",");
+        //                             let lastTextBeforeComma = parts[parts.length - 2].trim();
+        //                         console.log(lastTextBeforeComma);
+        //                         e.preventDefault();
+        //                         getname.focus();
+        // }
+                            }
+                        });
 
                         getamount.addEventListener("keypress", (e) => {
                             if (e.key == "Enter") {
@@ -712,13 +726,24 @@ class AdminController extends Controller
                                 var name = document.getElementById("myname").value.trim();
                                 var amount = document.getElementById("amount").value.trim();
                                 if(name && amount){
-                                
-                                    merge.push(name + amount);
-                                    console.log(merge);
-                                    getname.value = "";
+                                    let parts = name.split(",");
+                                    // console.log(parts.length - 2);
+                                    let lastTextBeforeComma = parts[parts.length - 2].trim();
+                                    merge.push(lastTextBeforeComma + "," + amount);
+                                    // getname.value = "";
                                     getamount.value = "";
                                     hold_value.value = merge.join(",");
+                                    console.log(merge);
                                     console.log(hold_value.value);
+
+
+                                    // var s="Text1, Text2, Text,true,";
+                                    // var lastIndex = s.lastIndexOf(",")
+
+                                    // var s1 = s.substring(0, lastIndex); //after this s1="Text1, Text2, Text"
+                                    // var s2 = s.substring(lastIndex + 1);
+                                    // console.log(s2);
+
                                 }
 
                                 getname.focus();
@@ -955,7 +980,7 @@ class AdminController extends Controller
             }
 
             $array = $request->hold_value;
-            // dd($request->hold_value);
+            dd($request->hold_value);
             // $array = $request->name;
             $array = explode(',', $array);
             // dd($array);
