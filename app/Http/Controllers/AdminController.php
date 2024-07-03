@@ -552,7 +552,7 @@ class AdminController extends Controller
             $model = $data::find($id);
         }
         $form = $this->generic_form($slug, $model);
-        return view('admindashboard.add_team_member', compact('form', 'id'));
+        return view('admindashboard.add_team_member', compact('form', 'id','slug'));
     }
 
 
@@ -623,6 +623,7 @@ class AdminController extends Controller
         } elseif ($slug == 'khata') {
             $data = 'App\Models\\' . $slug;
             $user = 'App\Models\User';
+
             $loop = $user::where('is_active', 1)->where('is_deleted', 0)->get();
             $body .= '   <form action="' . route('crud_generate', $slug) . '" enctype="multipart/form-data" method="POST">
                                                  <input type="hidden" name="_token" value="' . csrf_token() . '">
@@ -638,6 +639,7 @@ class AdminController extends Controller
                                                                     class="form-label last-name ">Name</label>
                                                                 <input type="text" name="name" id="myname" class="form-control myname"
                                                                     aria-label="Last name" value="' . ($model ? $model->name : '') . '">
+
                                                             </div>
                                                             <div class="col-12 col-md-12 col-lg-6">
                                                                 <label for="exampleFormControlInput1"
@@ -653,7 +655,7 @@ class AdminController extends Controller
                                                             <div class="col-12 col-md-12 col-lg-12">
                                                                 <label for="exampleFormControlInput1"
                                                                     class="form-label last-name ">Merge Name</label>
-                                                                <input type="text" name="name" id="merger_name" class="form-control myname"
+                                                                <input type="text" name="name" id="merge_name" class="form-control merge_name"
                                                                     aria-label="Last name" value="">
                                                             </div>
                                                         </div>
@@ -665,10 +667,7 @@ class AdminController extends Controller
                                                                 <label for="exampleFormControlInput1"
                                                                     class="form-label">User</label>
 
-
-
                                                                      <select id="select_page" name="user_id" class="form-control operator">
-
                                                                                                                                                                                             <option value="" selected disabled>Please choose an option</option>';
             if ($loop) {
                 foreach ($loop as $key => $value) {
@@ -680,8 +679,8 @@ class AdminController extends Controller
                                                             <div class="col-12 col-md-12 col-lg-6">
                                                                 <label for="exampleFormControlInput1"
                                                                     class="form-label last-name ">Description</label>
-                                                                <input type="text" name="description" class="form-control"
-                                                                    aria-label="Last name" value="' . ($model ? $model->description : '') . '">
+                                                                <input type="text" name="description" class="form-control "
+                                                                    aria-label="Last name" id="description" value="' . ($model ? $model->description : '') . '">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -692,68 +691,10 @@ class AdminController extends Controller
                                             </div>
                                         </form>';
 
-            $script =  'var getname = document.getElementById("myname");
-                        var getamount = document.getElementById("amount");
-                        var hold_value = document.getElementById("hold_value");
-                        var merge = [];
 
-                        getname.addEventListener("keyup", (e) => {
-                            if (e.key == ",") {
-                                var name = document.getElementById("myname").value.trim();
-                                // console.log(name);
-                                e.preventDefault();
-                                getamount.focus();
-                            }
-                        });
-                         getamount.addEventListener("keydown", (e) => {
-                            if (e.key == "Tab") {
-
-                                var name = document.getElementById("myname").value.trim();
-                                var getamount = document.getElementById("amount").value.trim();
-        //                        if(name){
-        //                             let parts = name.split(",");
-        //                             let lastTextBeforeComma = parts[parts.length - 2].trim();
-        //                         console.log(lastTextBeforeComma);
-        //                         e.preventDefault();
-        //                         getname.focus();
-        // }
-                            }
-                        });
-
-                        getamount.addEventListener("keypress", (e) => {
-                            if (e.key == "Enter") {
-                                e.preventDefault();
-                                var name = document.getElementById("myname").value.trim();
-                                var amount = document.getElementById("amount").value.trim();
-                                if(name && amount){
-                                    let parts = name.split(",");
-                                    // console.log(parts.length - 2);
-                                    let lastTextBeforeComma = parts[parts.length - 2].trim();
-                                    merge.push(lastTextBeforeComma + "," + amount);
-                                    // getname.value = "";
-                                    getamount.value = "";
-                                    hold_value.value = merge.join(",");
-                                    console.log(merge);
-                                    console.log(hold_value.value);
-
-
-                                    // var s="Text1, Text2, Text,true,";
-                                    // var lastIndex = s.lastIndexOf(",")
-
-                                    // var s1 = s.substring(0, lastIndex); //after this s1="Text1, Text2, Text"
-                                    // var s2 = s.substring(lastIndex + 1);
-                                    // console.log(s2);
-
-                                }
-
-                                getname.focus();
-
-                            }
-                            });
-                            ';
 
             $resp['body'] = $body;
-            $resp['script'] = $script;
+            $resp['script'] = '';
             return $resp;
         } elseif ($slug == 'Category') {
             $data = 'App\Models\\' . $slug;

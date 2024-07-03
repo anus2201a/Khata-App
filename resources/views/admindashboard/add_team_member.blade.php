@@ -135,9 +135,62 @@
 @endsection
 
 @section('script')
+    <script>
+        {!! $form['script'] !!}
+    </script>
+    <script>
+        @if ($slug == 'khata')
+            var getname = document.getElementById("myname");
+            var getamount = document.getElementById("amount");
+            var hold_value = document.getElementById("hold_value");
+            var merge_name = document.getElementById("merge_name");
+            var merge = [];
 
-<script>
-    {!! $form['script'] !!}
-</script>
+            getname.addEventListener("keyup", (e) => {
+                if (e.key == ",") {
+                    ajax
+                    response
+                    var name = document.getElementById("myname").value.trim();
+                    e.preventDefault();
+                    getamount.focus();
+                }
+            });
 
+            getamount.addEventListener("keydown", (e) => {
+                if (e.key == "Enter") {
+                    e.preventDefault();
+                    var name = document.getElementById("myname").value.trim();
+                    var amount = document.getElementById("amount").value.trim();
+                    if (name && amount) {
+                        let parts = name.split(",");
+                        // console.log(parts.length - 2);
+                        let lastTextBeforeComma = parts[parts.length - 2].trim();
+                        merge.push(lastTextBeforeComma + "," + amount);
+                        // getname.value = "";
+                        getamount.value = "";
+                        hold_value.value = merge.join(",");
+                        console.log(merge);
+                        console.log(hold_value.value);
+                    }
+
+                    getname.focus();
+                } else if (e.key == "Tab") {
+                    var name = document.getElementById("myname").value.trim();
+                    var amount = document.getElementById("amount").value.trim();
+                    if (name && amount) {
+                        let parts = name.split(",");
+                        // console.log(parts.length - 2);
+                        let lastTextBeforeComma = parts[parts.length - 2].trim();
+                        merge.push(lastTextBeforeComma + "," + amount);
+                        // getname.value = "";
+                        getamount.value = "";
+                        hold_value.value = merge.join(",");
+                        console.log(merge);
+                        console.log(hold_value.value);
+                    }
+
+                }
+            });
+        @endif
+    </script>
 @endsection
