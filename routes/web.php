@@ -97,10 +97,10 @@ Route::group(['middleware' => ['checkuser']], function () {
         Route::get('/user_khata/{slug}/{id}', [AdminController::class, 'user_khata'])->name('user_khata');
         Route::get('/form/{slug}/{id?}', [AdminController::class, 'generate_form'])->name('generate');
         Route::post('/store/{slug}', [AdminController::class, 'crud_generate'])->name('crud_generate');
+        Route::get('/khata/get', [AdminController::class, 'get_khata'])->name('khata.get');
 
 
         // Route::post('/config/store', [AdminController::class, 'config_post'])->name('config.store');
-
     });
 });
 

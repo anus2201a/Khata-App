@@ -145,12 +145,32 @@
             var hold_value = document.getElementById("hold_value");
             var merge_name = document.getElementById("merge_name");
             var merge = [];
+            var new_name;
 
             getname.addEventListener("keyup", (e) => {
                 if (e.key == ",") {
-                    ajax
-                    response
                     var name = document.getElementById("myname").value.trim();
+                    var amount = getamount.value;
+
+
+                    let parts = name.split(",");
+                    let getname = parts[parts.length - 2].trim();
+                    new_name = getname;
+
+                    $.ajax({
+                        url: '{{ route('khata.get') }}',
+                        type: 'GET',
+                        dataType: "json",
+                        data: {
+                            name: getname,
+                            amount: 0
+                        },
+                        success: function(response) {
+                            getamount.value = response.data ? response.data : ''
+
+                        },
+                    });
+
                     e.preventDefault();
                     getamount.focus();
                 }
@@ -163,30 +183,43 @@
                     var amount = document.getElementById("amount").value.trim();
                     if (name && amount) {
                         let parts = name.split(",");
-                        // console.log(parts.length - 2);
                         let lastTextBeforeComma = parts[parts.length - 2].trim();
                         merge.push(lastTextBeforeComma + "," + amount);
-                        // getname.value = "";
+
                         getamount.value = "";
                         hold_value.value = merge.join(",");
-                        console.log(merge);
-                        console.log(hold_value.value);
+
                     }
 
+                    $.ajax({
+                        url: '{{ route('khata.get') }}',
+                        type: 'GET',
+                        dataType: "json",
+                        data: {
+                            name: new_name,
+                            amount: amount
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                getamount.value = response.data
+                            } else {
+                                getamount.value = response.data
+                            }
+
+                        },
+                    });
+                    console.log(merge)
                     getname.focus();
                 } else if (e.key == "Tab") {
                     var name = document.getElementById("myname").value.trim();
                     var amount = document.getElementById("amount").value.trim();
                     if (name && amount) {
                         let parts = name.split(",");
-                        // console.log(parts.length - 2);
                         let lastTextBeforeComma = parts[parts.length - 2].trim();
                         merge.push(lastTextBeforeComma + "," + amount);
                         // getname.value = "";
                         getamount.value = "";
                         hold_value.value = merge.join(",");
-                        console.log(merge);
-                        console.log(hold_value.value);
                     }
 
                 }

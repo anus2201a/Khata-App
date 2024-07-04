@@ -19,6 +19,7 @@ use App\Models\Our_Service;
 use App\Models\services_faq;
 use Illuminate\Http\Request;
 use App\Models\cms_contacts;
+use App\Models\item;
 use App\Models\khata;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -552,7 +553,7 @@ class AdminController extends Controller
             $model = $data::find($id);
         }
         $form = $this->generic_form($slug, $model);
-        return view('admindashboard.add_team_member', compact('form', 'id','slug'));
+        return view('admindashboard.add_team_member', compact('form', 'id', 'slug'));
     }
 
 
@@ -898,7 +899,6 @@ class AdminController extends Controller
 
     public function crud_generate($slug = '', Request $request)
     {
-
         // $name = serialize(json_encode(array_values($request->all())));
         // $name = unserialize($name);
         // // $name = serialize(array($request->all()));
@@ -936,7 +936,6 @@ class AdminController extends Controller
                     $amount[] = $value;
                     // dd('no');
                 }
-
                 // dd($array, $name, $amount);
             }
             foreach ($name as $key => $value) {
@@ -964,5 +963,29 @@ class AdminController extends Controller
 
         //  dd($create);
         return redirect()->route('listing', $slug)->with('success', $message);
+    }
+
+    public function get_khata(Request $request)
+    {
+        $get_name = $_GET['name'];
+        $get_amount = $_GET['amount'];
+        // dd($get_amount);
+        $data = Item::where('name', $get_name)->first();
+
+        if ($data) {
+            if($request->amount){
+                $data->amount = $request->amount;
+                $data->save();
+            }
+            $data = $data->amount;
+            return response()->json(['success' => true, 'message' => 'Get Data', 'data' => $data]);
+        } else {
+           $create = item::create([
+                'name' => $get_name,
+                'amount' => $get_amount
+            ]);
+
+            return response()->json(['success' => false, 'message' => 'Please Enter Amount', 'data' => '']);
+        }
     }
 }
