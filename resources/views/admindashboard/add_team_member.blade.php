@@ -221,6 +221,7 @@
                         // getname.value = "";
                         getamount.value = "";
                         hold_value.value = merge.join(",");
+                        // console.log(hold_value.value);
                     }
 
                 }

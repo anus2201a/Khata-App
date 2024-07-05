@@ -19,8 +19,8 @@ use App\Models\Our_Service;
 use App\Models\services_faq;
 use Illuminate\Http\Request;
 use App\Models\cms_contacts;
-use App\Models\item;
 use App\Models\khata;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -697,6 +697,60 @@ class AdminController extends Controller
             $resp['body'] = $body;
             $resp['script'] = '';
             return $resp;
+        } elseif ($slug == 'product') {
+            $data = 'App\Models\\' . $slug;
+            $user = 'App\Models\User';
+
+            $loop = $user::where('is_active', 1)->where('is_deleted', 0)->get();
+            $body .= '   <form action="' . route('crud_generate', $slug) . '" enctype="multipart/form-data" method="POST">
+                                                 <input type="hidden" name="_token" value="' . csrf_token() . '">
+                                                  <input type="hidden" name="id" value="' . ($model ? $model->id : '') . '">
+                                                  <input type="hidden" name="hold_value" class="hold_value" id="hold_value">
+                                             <div class="personal-informations-from">
+                                                <div class="personal-informations-from-item">
+
+                                                    <div class="personal-informations-from-item-inner">
+                                                        <div class="row">
+                                                            <div class="col-12 col-md-12 col-lg-6">
+                                                                <label for="exampleFormControlInput1"
+                                                                    class="form-label last-name ">Name</label>
+                                                                <input type="text" name="name" id="myname" class="form-control myname"
+                                                                    aria-label="Last name" value="' . ($model ? $model->name : '') . '">
+
+                                                            </div>
+                                                            <div class="col-12 col-md-12 col-lg-6">
+                                                                <label for="exampleFormControlInput1"
+                                                                    class="form-label last-name ">Amount</label>
+                                                                <input type="number" name="amount" id="amount" class="form-control"
+                                                                    aria-label="Last name" value="' . ($model ? $model->amount : '') . '">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="personal-informations-from-item-inner">
+                                                        <div class="row">
+
+                                                            <div class="col-12 col-md-12 col-lg-12">
+                                                                <label for="exampleFormControlInput1"
+                                                                    class="form-label last-name ">Description</label>
+                                                                <input type="file" name="description" class="form-control "
+                                                                    aria-label="Last name" id="description" value="' . ($model ? $model->image : '') . '">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="personal-informations-from-btn">
+                                                <button type="text" class="btn-one">Save Profile</button>
+                                                </div>
+                                            </div>
+                                        </form>';
+
+
+
+            $resp['body'] = $body;
+            $resp['script'] = '';
+            return $resp;
         } elseif ($slug == 'Category') {
             $data = 'App\Models\\' . $slug;
             $body = ' <form action="' . route('crud_generate', $slug) . '" enctype="multipart/form-data" method="POST">
@@ -780,6 +834,46 @@ class AdminController extends Controller
             $resp['body'] = $body;
             return $resp;
         } elseif ($slug == 'khata') {
+            $data = 'App\Models\\' . $slug;
+            // $loop = $data::where('is_active', 1)->where('is_deleted', 0)->get();
+            $loop = $data::where('is_active', 1)->where('is_deleted', 0)->get();
+            // dd(unserialize($loop->name));
+            // dd($loop);
+            if ($loop) {
+                $body .= '<thead>
+                        <tr >
+                            <th>S. no</th>
+                            <th>Name</th>
+                            <th>Amount</th>
+                            <th>User</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>';
+                if ($loop) {
+                    // dd(unserialize($loop->name));
+
+                    foreach ($loop as $key => $value) {
+                        $body .= ' <tr>
+                        <td>' . ++$key . '</td>
+
+                                <td>' . $value->name . '</td>
+                                <td>' . $value->amount . '</td>
+                                <td>' . ($value->get_user->name ??  '') . '</td>
+                                <td class="col-lg-2">
+                                    <div class="col-lg-12">
+                                    <a href="' . route('generate', ['slug' => $slug, 'id' => $value->id]) . '" class="btn-one success text-white pt-3">Update</a><br>' .
+                            '<a href="' . route('generate', ['slug' => $slug, 'id' => $value->id]) . '" class="btn btn-primary text-center text-white pt-3">Manage</a><br>' .
+                            '</div></td>
+                            </tr>';
+                    }
+                }
+                $body .= '</tbody>';
+            }
+            // dd($body);
+            $resp['body'] = $body;
+            return $resp;
+        } elseif ($slug == 'product') {
             $data = 'App\Models\\' . $slug;
             // $loop = $data::where('is_active', 1)->where('is_deleted', 0)->get();
             $loop = $data::where('is_active', 1)->where('is_deleted', 0)->get();
@@ -908,7 +1002,7 @@ class AdminController extends Controller
         $req = $request->except('_token', 'image');
         // dd($req);
         if ($request->hasFile('image')) {
-            $image = $this->image_upload($request->image);
+            $image = $this->image_upload($request->file('image'));
             $req['image'] = $image;
             // dd($req['image']);
         }
@@ -921,20 +1015,18 @@ class AdminController extends Controller
             }
 
             $array = $request->hold_value;
-            dd($request->hold_value);
+            // dd($request->hold_value);
             // $array = $request->name;
             $array = explode(',', $array);
             // dd($array);
             $name = [];
             $amount = [];
             foreach ($array as $key => $value) {
-                // dd($value);
+                // dd($key);
                 if ($key % 2 == 0) {
                     $name[] = $value;
-                    // dd('yes');
                 } else {
                     $amount[] = $value;
-                    // dd('no');
                 }
                 // dd($array, $name, $amount);
             }
@@ -970,17 +1062,17 @@ class AdminController extends Controller
         // $get_name = $_GET['name'];
         // $get_amount = $_GET['amount'];
         // dd($get_amount);
-        $data = Item::where('name', $request->name)->first();
+        $data = Product::where('name', $request->name)->first();
 
         if ($data) {
-            if($request->amount){
+            if ($request->amount) {
                 $data->amount = $request->amount;
                 $data->save();
             }
             $data = $data->amount;
             return response()->json(['success' => true, 'message' => 'Get Data', 'data' => $data]);
         } else {
-           $create = item::create([
+            $create = Product::create([
                 'name' => $request->name,
                 'amount' => $request->amount
             ]);
