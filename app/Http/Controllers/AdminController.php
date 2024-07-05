@@ -967,10 +967,10 @@ class AdminController extends Controller
 
     public function get_khata(Request $request)
     {
-        $get_name = $_GET['name'];
-        $get_amount = $_GET['amount'];
+        // $get_name = $_GET['name'];
+        // $get_amount = $_GET['amount'];
         // dd($get_amount);
-        $data = Item::where('name', $get_name)->first();
+        $data = Item::where('name', $request->name)->first();
 
         if ($data) {
             if($request->amount){
@@ -981,9 +981,10 @@ class AdminController extends Controller
             return response()->json(['success' => true, 'message' => 'Get Data', 'data' => $data]);
         } else {
            $create = item::create([
-                'name' => $get_name,
-                'amount' => $get_amount
+                'name' => $request->name,
+                'amount' => $request->amount
             ]);
+
 
             return response()->json(['success' => false, 'message' => 'Please Enter Amount', 'data' => '']);
         }
