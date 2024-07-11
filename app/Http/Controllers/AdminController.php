@@ -674,7 +674,10 @@ class AdminController extends Controller
                                                                 <label for="exampleFormControlInput1"
                                                                     class="form-label">User</label>
 
-                                                                     <select id="select_page" name="user_id" class="form-control">';
+                                                                     <select id="select_page" name="user_id" class="form-control">
+                                                                 <option value="" selected disabled>Please choose an option</option>';
+
+
             if ($loop) {
                 foreach ($loop as $key => $value) {
                     $body .= '<option value="' . $value->id . '"' . ($value->id === ($model ? $model->user_id : '') ? 'selected' : '') . '>' . $value->name . '</option>';
@@ -787,6 +790,8 @@ class AdminController extends Controller
                                         </form>';
             $resp['body'] = $body;
             return $resp;
+        } else {
+            return $body;
         }
     }
 

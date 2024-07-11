@@ -145,6 +145,7 @@
             var hold_value = document.getElementById("hold_value");
             var merge_name = document.getElementById("merge_name");
             var merge = [];
+            var amountmerge = [];
             var new_name;
 
             getname.addEventListener("keyup", (e) => {
@@ -187,6 +188,14 @@
                         let lastTextBeforeComma = parts[parts.length - 2].trim();
                         merge.push(lastTextBeforeComma + "," + amount);
 
+                        //     let amounts = hold_value.split(",");
+                        //     var plus = "+";
+                        //     let lastamountBeforeComma = parts[amounts.length - 1].trim();
+                        //     amountmerge.push(lastamountBeforeComma + parseInt(plus) + amount);
+                        //     // text.replace("Microsoft", "W3Schools");
+                        // console.log(amountmerge)
+
+
                         getamount.value = "";
                         hold_value.value = merge.join(",");
 
@@ -202,7 +211,7 @@
                         },
                         success: function(response) {
                             if (response.success) {
-                                getamount.value = response.data
+                                getamount.value  = response.data
                             } else {
                                 getamount.value = response.data
                             }
