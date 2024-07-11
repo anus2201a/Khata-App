@@ -523,14 +523,14 @@ class AdminController extends Controller
     public function listing($slug = '')
     {
         $table = $this->generic_table($slug);
-        return view('admindashboard.all_team_member', compact('table'));
+        return view('admindashboard.all_team_member', compact('table', 'slug'));
     }
 
     public function listing_manage($slug = '')
     {
 
         $manage_table = $this->manage_table($slug);
-        return view('admindashboard.manage_khata', compact('manage_table'));
+        return view('admindashboard.manage_khata', compact('manage_table', 'slug'));
     }
 
     public function user_khata($slug = '', $id = null)
@@ -629,20 +629,19 @@ class AdminController extends Controller
             $body .= '   <form action="' . route('crud_generate', $slug) . '" enctype="multipart/form-data" method="POST">
                                                  <input type="hidden" name="_token" value="' . csrf_token() . '">
                                                   <input type="hidden" name="id" value="' . ($model ? $model->id : '') . '">
-                                                  <input type="hidden" name="hold_value" class="hold_value" id="hold_value">
                                              <div class="personal-informations-from">
                                                 <div class="personal-informations-from-item">
 
                                                     <div class="personal-informations-from-item-inner">
                                                         <div class="row">
-                                                            <div class="col-12 col-md-12 col-lg-6">
+                                                            <div class="col-12 col-md-6 col-lg-6">
                                                                 <label for="exampleFormControlInput1"
                                                                     class="form-label last-name ">Name</label>
                                                                 <input type="text" name="name" id="myname" class="form-control myname"
                                                                     aria-label="Last name" value="' . ($model ? $model->name : '') . '">
 
                                                             </div>
-                                                            <div class="col-12 col-md-12 col-lg-6">
+                                                            <div class="col-12 col-md-6 col-lg-6">
                                                                 <label for="exampleFormControlInput1"
                                                                     class="form-label last-name ">Amount</label>
                                                                 <input type="number" name="amount" id="amount" class="form-control"
@@ -651,12 +650,19 @@ class AdminController extends Controller
                                                         </div>
                                                     </div>
 
-                                                      <div class="personal-informations-from-item-inner">
+                                                    <div class="personal-informations-from-item-inner">
                                                         <div class="row">
-                                                            <div class="col-12 col-md-12 col-lg-12">
+                                                            <div class="col-12 col-md-6 col-lg-6">
                                                                 <label for="exampleFormControlInput1"
                                                                     class="form-label last-name ">Merge Name</label>
-                                                                <input type="text" name="name" id="merge_name" class="form-control merge_name"
+                                                                <input type="text" name="hold_value" id="hold_value" class="form-control hold_value"
+                                                                    aria-label="Last name" value="">
+                                                            </div>
+
+                                                            <div class="col-12 col-md-6 col-lg-6">
+                                                                <label for="exampleFormControlInput1"
+                                                                    class="form-label last-name ">Total Amount</label>
+                                                                <input type="text" name="total_amount" id="total_amount" class="form-control total_amount"
                                                                     aria-label="Last name" value="">
                                                             </div>
                                                         </div>
@@ -664,12 +670,11 @@ class AdminController extends Controller
 
                                                     <div class="personal-informations-from-item-inner">
                                                         <div class="row">
-                                                            <div class="col-6 col-md-6 col-lg-6">
+                                                            <div class="col-12 col-md-6 col-lg-6 m-auto p-auto">
                                                                 <label for="exampleFormControlInput1"
                                                                     class="form-label">User</label>
 
-                                                                     <select id="select_page" name="user_id" class="form-control operator">
-                                                                                                                                                                                            <option value="" selected disabled>Please choose an option</option>';
+                                                                     <select id="select_page" name="user_id" class="form-control">';
             if ($loop) {
                 foreach ($loop as $key => $value) {
                     $body .= '<option value="' . $value->id . '"' . ($value->id === ($model ? $model->user_id : '') ? 'selected' : '') . '>' . $value->name . '</option>';
@@ -677,11 +682,11 @@ class AdminController extends Controller
             }
             $body .= '</select>
                                                             </div>
-                                                            <div class="col-12 col-md-12 col-lg-6">
+                                                            <div class="col-12 col-md-6 col-lg-6">
                                                                 <label for="exampleFormControlInput1"
                                                                     class="form-label last-name ">Description</label>
                                                                 <input type="text" name="description" class="form-control "
-                                                                    aria-label="Last name" id="description" value="' . ($model ? $model->description : '') . '">
+                                                                    aria-label="Last name" id="description" value="' . ($model ? $model->description     : '') . '">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -705,20 +710,19 @@ class AdminController extends Controller
             $body .= '   <form action="' . route('crud_generate', $slug) . '" enctype="multipart/form-data" method="POST">
                                                  <input type="hidden" name="_token" value="' . csrf_token() . '">
                                                   <input type="hidden" name="id" value="' . ($model ? $model->id : '') . '">
-                                                  <input type="hidden" name="hold_value" class="hold_value" id="hold_value">
                                              <div class="personal-informations-from">
                                                 <div class="personal-informations-from-item">
 
                                                     <div class="personal-informations-from-item-inner">
                                                         <div class="row">
-                                                            <div class="col-12 col-md-12 col-lg-6">
+                                                            <div class="col-12 col-md-6 col-lg-6">
                                                                 <label for="exampleFormControlInput1"
                                                                     class="form-label last-name ">Name</label>
                                                                 <input type="text" name="name" id="myname" class="form-control myname"
                                                                     aria-label="Last name" value="' . ($model ? $model->name : '') . '">
 
                                                             </div>
-                                                            <div class="col-12 col-md-12 col-lg-6">
+                                                            <div class="col-12 col-md-6 col-lg-6">
                                                                 <label for="exampleFormControlInput1"
                                                                     class="form-label last-name ">Amount</label>
                                                                 <input type="number" name="amount" id="amount" class="form-control"
@@ -731,11 +735,11 @@ class AdminController extends Controller
                                                     <div class="personal-informations-from-item-inner">
                                                         <div class="row">
 
-                                                            <div class="col-12 col-md-12 col-lg-12">
+                                                            <div class="col-12 col-md-6 col-lg-12">
                                                                 <label for="exampleFormControlInput1"
                                                                     class="form-label last-name ">Description</label>
-                                                                <input type="file" name="description" class="form-control "
-                                                                    aria-label="Last name" id="description" value="' . ($model ? $model->image : '') . '">
+                                                                <input type="text" name="description" class="form-control "
+                                                                    aria-label="Last name" id="description" value="' . ($model ? $model->description : '') . '">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -863,7 +867,6 @@ class AdminController extends Controller
                                 <td class="col-lg-2">
                                     <div class="col-lg-12">
                                     <a href="' . route('generate', ['slug' => $slug, 'id' => $value->id]) . '" class="btn-one success text-white pt-3">Update</a><br>' .
-                            '<a href="' . route('generate', ['slug' => $slug, 'id' => $value->id]) . '" class="btn btn-primary text-center text-white pt-3">Manage</a><br>' .
                             '</div></td>
                             </tr>';
                     }
@@ -875,35 +878,29 @@ class AdminController extends Controller
             return $resp;
         } elseif ($slug == 'product') {
             $data = 'App\Models\\' . $slug;
-            // $loop = $data::where('is_active', 1)->where('is_deleted', 0)->get();
             $loop = $data::where('is_active', 1)->where('is_deleted', 0)->get();
-            // dd(unserialize($loop->name));
-            // dd($loop);
             if ($loop) {
                 $body .= '<thead>
                         <tr >
                             <th>S. no</th>
                             <th>Name</th>
                             <th>Amount</th>
-                            <th>User</th>
+                            <th>Description</th>
                             <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>';
                 if ($loop) {
-                    // dd(unserialize($loop->name));
-
                     foreach ($loop as $key => $value) {
                         $body .= ' <tr>
                         <td>' . ++$key . '</td>
 
-                                <td>' . $value->name . '</td>
-                                <td>' . $value->amount . '</td>
-                                <td>' . ($value->get_user->name ??  '') . '</td>
+                                <td>' . ($value->name ?? '') . '</td>
+                                <td>' . ($value->amount ?? '') . '</td>
+                                <td>' . ($value->description ??  '') . '</td>
                                 <td class="col-lg-2">
                                     <div class="col-lg-12">
                                     <a href="' . route('generate', ['slug' => $slug, 'id' => $value->id]) . '" class="btn-one success text-white pt-3">Update</a><br>' .
-                            '<a href="' . route('generate', ['slug' => $slug, 'id' => $value->id]) . '" class="btn btn-primary text-center text-white pt-3">Manage</a><br>' .
                             '</div></td>
                             </tr>';
                     }
@@ -952,7 +949,6 @@ class AdminController extends Controller
         if ($slug == 'User_khata') {
             $data = 'App\Models\\' . $slug;
             $loop = $data::where('is_active', 1)->where('is_deleted', 0)->get();
-            // dd($loop);
             if ($loop) {
                 $body .= '<thead>
                         <tr >
@@ -973,14 +969,12 @@ class AdminController extends Controller
                                 <td class="col-lg-2">
                                     <div class="col-lg-12">
                                     <a href="' . route('user_khata', ['slug' => $slug, 'id' => $value->id]) . '" class="btn-one success text-white pt-3">Manage Khata</a><br>' .
-                            // <a href="' . route("team.delete", $value->id) . '" class="btn-one danger bg-danger text-white pt-3">Delete</a>
                             '</div></td>
                             </tr>';
                     }
                 }
                 $body .= '</tbody>';
             }
-            // dd($body);
             $resp['body'] = $body;
             return $resp;
         } else {
@@ -993,18 +987,12 @@ class AdminController extends Controller
 
     public function crud_generate($slug = '', Request $request)
     {
-        // $name = serialize(json_encode(array_values($request->all())));
-        // $name = unserialize($name);
-        // // $name = serialize(array($request->all()));
-        // dd($name);
-
         $data = 'App\Models\\' . $slug;
         $req = $request->except('_token', 'image');
         // dd($req);
         if ($request->hasFile('image')) {
             $image = $this->image_upload($request->file('image'));
             $req['image'] = $image;
-            // dd($req['image']);
         }
         if ($request->id) {
             $update = $data::where('id', $request->id)->update($req);
@@ -1012,48 +1000,38 @@ class AdminController extends Controller
         } else {
             if ($slug == "User") {
                 $req['password'] = Hash::make($request->password);
-            }
-
-            $array = $request->hold_value;
-            // dd($request->hold_value);
-            // $array = $request->name;
-            $array = explode(',', $array);
-            // dd($array);
-            $name = [];
-            $amount = [];
-            foreach ($array as $key => $value) {
-                // dd($key);
-                if ($key % 2 == 0) {
-                    $name[] = $value;
-                } else {
-                    $amount[] = $value;
+                $create = $data::create($req);
+            } elseif ($slug == "khata") {
+                $array = $request->hold_value;
+                // dd($request->hold_value);
+                $array = explode(',', $array);
+                $name = [];
+                $amount = [];
+                foreach ($array as $key => $value) {
+                    if ($key % 2 == 0) {
+                        $name[] = $value;
+                    } else {
+                        $amount[] = $value;
+                    }
+                    // dd($array, $name, $amount);
                 }
-                // dd($array, $name, $amount);
+                foreach ($name as $key => $value) {
+                    // dd($value);
+                    $create = $data::create([
+                        'name' => $value,
+                        'user_id' => $request->user_id,
+                        'amount' => $amount[$key],
+                        'description' => $request->description,
+                    ]);
+                }
+            } else {
+                $create = $data::create($req);
             }
-            foreach ($name as $key => $value) {
-                $create = $data::create([
-                    // 'name' => serialize($req),
-                    'name' => $value,
-                    'user_id' => $request->user_id,
-                    'amount' => $amount[$key],
-                    'description' => $request->description,
-                ]);
-            }
-
-
-            // dd($create);
 
 
             $message = "Record Created";
         }
 
-        // $seralize = serialize($req);
-
-        // $unSeralize = unserialize($seralize);
-
-        // dd($seralize, $unSeralize );
-
-        //  dd($create);
         return redirect()->route('listing', $slug)->with('success', $message);
     }
 
@@ -1074,7 +1052,8 @@ class AdminController extends Controller
         } else {
             $create = Product::create([
                 'name' => $request->name,
-                'amount' => $request->amount
+                'amount' => $request->amount,
+                'description' => "demo"
             ]);
 
 

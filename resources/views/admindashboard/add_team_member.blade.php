@@ -27,9 +27,9 @@
                                     <div class="col-lg-12">
                                         <div class="row border border-5 border-dark m-auto py-2">
                                             <div class="personal-informations-from-btn col-lg-6 m-auto">
-                                                <h1><b>Form</b></h1>
-                                            </div>
-                                            <div class="personal-informations-from-btn col-lg-6 my-2 px-2">
+                                                <h1 class="text-center"><b>Form</b></h1>
+                                            {{-- </div> --}}
+                                            {{-- <div class="personal-informations-from-btn col-lg-6 my-2 px-2"> --}}
 
                                                 {{-- <button type="submit" class="btn-one">Update Content</button> --}}
                                                 {{-- <a href="{{ url('cms_home_form' )}}" class="btn-one btn-success">Update Content</a> --}}
@@ -219,7 +219,7 @@
                         let lastTextBeforeComma = parts[parts.length - 2].trim();
                         merge.push(lastTextBeforeComma + "," + amount);
                         // getname.value = "";
-                        getamount.value = "";
+                        // getamount.value = "";
                         hold_value.value = merge.join(",");
                         // console.log(hold_value.value);
                     }

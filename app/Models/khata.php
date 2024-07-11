@@ -15,6 +15,7 @@ class khata extends Model
 
     protected $guarded = [];
 
+
     protected $casts = [
         'name' => 'array',
     ];

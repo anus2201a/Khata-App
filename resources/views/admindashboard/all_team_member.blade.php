@@ -32,7 +32,7 @@
                                             <div class="personal-informations-from-btn col-lg-6 my-2 px-2">
 
                                                 {{-- <button type="submit" class="btn-one">Update Content</button> --}}
-                                                {{-- <a href="{{ url('cms_home_form' )}}" class="btn-one btn-success">Update Content</a> --}}
+                                                <a href="{{ route('generate', $slug )}}" class="btn-one btn btn-primary mt-2 text-center">Add NEW</a>
                                             </div>
                                         </div><br>
 
@@ -42,7 +42,7 @@
 
                                                 <div class="card-body">
                                                 <table id="example" class="table table-bordered bg-light" style="width:100%" >
-
+                                                    
                                                     {!! $table['body'] !!}
 
                                                 </table>

@@ -33,7 +33,7 @@ class AuthController extends Controller
         } else {
             return redirect()->route('login.form')->with('error_msg', 'Registration Failed');
         }
-    
+
 
     }
 
@@ -62,6 +62,7 @@ class AuthController extends Controller
 
     public function logout()
     {
+        
         Auth::logout();
         // session()->flush();
         return redirect()->route('login.form');
