@@ -28,8 +28,8 @@
                                         <div class="row border border-5 border-dark m-auto py-2">
                                             <div class="personal-informations-from-btn col-lg-6 m-auto">
                                                 <h1 class="text-center"><b>Form</b></h1>
-                                            {{-- </div> --}}
-                                            {{-- <div class="personal-informations-from-btn col-lg-6 my-2 px-2"> --}}
+                                                {{-- </div> --}}
+                                                {{-- <div class="personal-informations-from-btn col-lg-6 my-2 px-2"> --}}
 
                                                 {{-- <button type="submit" class="btn-one">Update Content</button> --}}
                                                 {{-- <a href="{{ url('cms_home_form' )}}" class="btn-one btn-success">Update Content</a> --}}
@@ -211,7 +211,7 @@
                         },
                         success: function(response) {
                             if (response.success) {
-                                getamount.value  = response.data
+                                getamount.value = response.data
                             } else {
                                 getamount.value = response.data
                             }
